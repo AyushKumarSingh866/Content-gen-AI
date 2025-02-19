@@ -1,15 +1,14 @@
-const express = require("express");
-const {handleGetAllUsers,handleGetUserById,handleUpdateUserById,handleDeleteUserById,handleCreateNewUser}
-=require('../controllers/user')
+import express from "express";
+import { handleGetAllUsers, handleGetUserById, handleUpdateUserById, handleDeleteUserById, handleCreateNewUser } from "../controllers/user.js"; // 👈 Add `.js`
+
 const router = express.Router();
 
-  
-  router.route('/').get(handleGetAllUsers).post(handleCreateNewUser)
-  
-  router.route("/:id")
-    .get(handleGetUserById)
-    .patch(handleUpdateUserById)
-    .delete(handleDeleteUserById);
-  
+router.route("/").get(handleGetAllUsers).post(handleCreateNewUser);
 
-  module.exports = router;
+router
+  .route("/:id")
+  .get(handleGetUserById)
+  .patch(handleUpdateUserById)
+  .delete(handleDeleteUserById);
+
+export default router;
