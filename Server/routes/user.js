@@ -1,14 +1,8 @@
-import express from "express";
-import { handleGetAllUsers, handleGetUserById, handleUpdateUserById, handleDeleteUserById, handleCreateNewUser } from "../controllers/user.js"; // 👈 Add `.js`
+import express from 'express';
+import { handleUserSignup } from '../controllers/user.js';
 
 const router = express.Router();
 
-router.route("/").get(handleGetAllUsers).post(handleCreateNewUser);
-
-router
-  .route("/:id")
-  .get(handleGetUserById)
-  .patch(handleUpdateUserById)
-  .delete(handleDeleteUserById);
+router.post('/', handleUserSignup);
 
 export default router;
