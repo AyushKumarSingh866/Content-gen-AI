@@ -1,10 +1,15 @@
-import jwt from "jsonwebtoken"; 
-import bcrypt from "bcryptjs"; 
-import User from "../models/user.model.js"; 
+import bcrypt from "bcryptjs";
+import User from "../models/user.model.js";
+import { generateToken } from "../utils/generateToken.js";
 
-//@description        Register New user
-//@route              POST /api/signup
-//@access             Public
+/*
+
+@description        Register New user
+@route              POST /api/signup
+@access             Public
+
+*/
+
 export const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -35,7 +40,7 @@ export const registerUser = async (req, res) => {
         _id: user.id,
         name: user.name,
         email: user.email,
-        token: generateToken(user._id)
+        token: generateToken(user._id),
       });
     } else {
       res.status(400).json({ message: "Invalid user data" });
@@ -71,7 +76,7 @@ export const loginUser = async (req, res) => {
       _id: user.id,
       name: user.name,
       email: user.email,
-      token: generateToken(user._id)
+      token: generateToken(user._id),
     });
   } catch (error) {
     console.error(error);
@@ -82,22 +87,12 @@ export const loginUser = async (req, res) => {
 //@description        Get user data
 //@route              GET /api/me
 //@access             Private
-export const getMe = async(req, res) => {
-  const {_id, name, email} = await User.findById(req.user.id)
-  
+export const getMe = async (req, res) => {
+  const { _id, name, email } = await User.findById(req.user.id);
 
   res.status(200).json({
-    id:_id,
+    id: _id,
     name,
     email,
-  })
+  });
 };
-
-//generating tokens
-
-const generateToken =(id)=>{
-  return jwt.sign({id}, process.env.JWT_SECRET,{
-    expiresIn:'30d',
-
-  })
-}
