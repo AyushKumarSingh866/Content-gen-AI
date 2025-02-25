@@ -1,0 +1,141 @@
+## API Documentation
+
+### Base URL  
+`http://localhost:5006/docs/`
+
+---
+
+## Endpoints
+
+### 1. Register a New User
+
+- **Endpoint:** `POST /signup`
+- **Description:** Creates a new account.
+- **Authentication:** No
+
+#### Request Body:
+```json
+{
+  "name": "John Doe",
+  "email": "johndoe@example.com",
+  "password": "password123"
+}
+```
+
+#### Response Example:
+```json
+{
+  "message": "User registered successfully"
+}
+```
+
+#### Possible Status Codes:
+- `201 Created` - User registered successfully
+- `400 Bad Request` - Invalid input
+- `500 Internal Server Error` - Server issue
+
+---
+
+### 2. User Login
+
+- **Endpoint:** `POST /login`
+- **Description:** Authenticates the user and returns a token.
+- **Authentication:** No
+
+#### Request Body:
+```json
+{
+  "email": "johndoe@example.com",
+  "password": "password123"
+}
+```
+
+#### Response Example:
+```json
+{
+  "token": "jwt-token-generated"
+}
+```
+
+#### Possible Status Codes:
+- `200 OK` - User authenticated
+- `400 Bad Request` - Invalid credentials
+- `500 Internal Server Error` - Server issue
+
+---
+
+### 3. Get User Details
+
+- **Endpoint:** `GET /details`
+- **Description:** Fetches details of the authenticated user.
+- **Authentication:** Yes (Bearer Token)
+
+#### Response Example:
+```json
+{
+  "id": "123",
+  "name": "John Doe",
+  "email": "johndoe@example.com"
+}
+```
+
+#### Possible Status Codes:
+- `200 OK` - Successfully retrieved user details
+- `401 Unauthorized` - Token missing or invalid
+- `500 Internal Server Error` - Server issue
+
+---
+
+### 4. Generate Text (AI)
+
+- **Endpoint:** `POST /generate`
+- **Description:** Generates AI responses using Llama 3.
+- **Authentication:** No
+
+#### Request Body:
+```json
+{
+  "message": "Best Captain Of Indian Cricket Team"
+}
+```
+
+#### Response Example:
+```json
+{
+  "response": "Virat Kohli"
+}
+```
+
+#### Possible Status Codes:
+- `200 OK` - Successfully generated response
+- `400 Bad Request` - Message Invalid
+- `500 Internal Server Error` - Server issue
+
+---
+
+### 5. Generate Code (AI)
+
+- **Endpoint:** `POST /code`
+- **Description:** Generates code snippets using the DeepSeek Llama model.
+- **Authentication:** No
+
+#### Request Body:
+```json
+{
+  "prompt": "Write a Python function to calculate the factorial of a number."
+}
+```
+
+#### Response Example:
+```python
+def factorial(n):
+    if n == 0:
+        return 1
+    else:
+        return n * factorial(n-1)
+```
+
+#### Possible Status Codes:
+- `200 OK` - Successfully generated code 
+- `400 Bad Request` - Prompt is required
+- `500 Internal Server Error` - Server issue

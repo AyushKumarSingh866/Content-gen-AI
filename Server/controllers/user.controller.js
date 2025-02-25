@@ -50,10 +50,13 @@ export const registerUser = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+/*
 
-//@description        Authenticate a user
-//@route              POST /api/login
-//@access             Public
+@description        Authenticate a user
+@route              POST /api/login
+@access             Public
+
+*/
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
@@ -83,11 +86,13 @@ export const loginUser = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+/*
+@description        Get user data
+@route              GET /api/me
+@access             Private
 
-//@description        Get user data
-//@route              GET /api/me
-//@access             Private
-export const getMe = async (req, res) => {
+*/
+export const getDetails = async (req, res) => {
   const { _id, name, email } = await User.findById(req.user.id);
 
   res.status(200).json({
