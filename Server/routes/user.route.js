@@ -1,8 +1,8 @@
 import express from "express";
 import { getDetails, loginUser, registerUser } from "../controllers/user.controller.js";
 import protect from "../middlewares/auth.middlewares.js"; 
-import generateMiddleware from "../middlewares/chatGen.middleware.js"; // ✅ Import middleware
-import generateCodeMiddleware from "../middlewares/codeGen.middleware.js";
+import generateMiddleware from "../controllers/chatGen.middleware.js"; // ✅ Import middleware
+import generateCodeMiddleware from "../controllers/codeGen.middleware.js";
 
 const router = express.Router();
 /**
