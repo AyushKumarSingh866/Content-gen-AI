@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes expanding {
+  0% {
+    transform: scaleX(0);
+    opacity: 0;
+    width: 0;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+@keyframes moving {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-loading {
+  transform-origin: left;
+  animation: expanding 0.4s 0.7s forwards linear,
+    moving 1s 1s infinite forwards linear;
+}
+
+.loading-bar {
+  height: 0.7rem;
+  border-radius: 1rem;
+  background-size: 200% auto;
+  opacity: 0;
+  margin-bottom: 5px;
+}
+
+.gradient-1 {
+  background-image: linear-gradient(
+    to right,
+    #a8d0e6 30%,
+    #1d4e89 60%,
+    #a8d0e6
+  );
+  width: 60%;
+}
+.gradient-2 {
+  background-image: linear-gradient(
+    to right,
+    #1d4e89 30%,
+    #a8d0e6 60%,
+    #1d4e89
+  );
+  width: 80%;
+}
+
+.gradient-3 {
+  background-image: linear-gradient(
+    to right,
+    #a8d0e6 50%,
+    #1d4e89 90%,
+    #a8d0e6
+  );
+  width: 40%;
+}

@@ -1,23 +1,23 @@
 import mongoose from "mongoose";
-import { DB_NAME, MONGODB_URI } from "../constant.js";
 
-const connectDb = async () => {
+const connectDB = async () => {
   try {
-    if (!MONGODB_URI) {
-      throw new Error("MONGO_URI is not defined in environment variables");
-    }
-
-    const connectionInstance = await mongoose.connect(
-      `${MONGODB_URI}/${DB_NAME}`
-    );
-
-    console.log(
-      ` Database connected successfully !!! ${connectionInstance.connection.host}`
-    );
+    await mongoose.connect("mongodb://127.0.0.1:27017/users"); // Updated syntax
+    console.log("✅ MongoDB connected successfully");
   } catch (error) {
-    console.error(` Database connection failed: ${error.message}`);
+    console.error("❌ MongoDB Connection Error:", error);
     process.exit(1);
   }
 };
 
-export default connectDb;
+// Handle disconnection errors
+mongoose.connection.on("error", (err) => {
+  console.error("MongoDB connection error:", err);
+});
+
+mongoose.connection.on("disconnected", () => {
+  console.warn("⚠️ MongoDB disconnected. Reconnecting...");
+  connectDB(); // Auto-reconnect if disconnected
+});
+
+export default connectDB;
