@@ -1,12 +1,23 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { toast, Toaster } from "react-hot-toast"; // Import toast & Toaster
 
 export default function SignupPage() {
   const navigate = useNavigate();
 
   const handleSignUp = () => {
-    alert("Signup successful! Redirecting to the response page...");
-    navigate("/app");
+    toast("Welcome to Diverse 🎉", {
+      icon: "🚀",
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+    });
+
+    setTimeout(() => {
+      navigate("/login"); 
+    }, 2000);
   };
 
   const handleLogin = () => {
@@ -15,6 +26,8 @@ export default function SignupPage() {
 
   return (
     <div className="relative h-screen w-full bg-slate-950 flex items-center justify-center">
+      <Toaster position="top-center" reverseOrder={false} /> {/* Toast Position */}
+
       {/* Background Grid Pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] flex items-center justify-center p-6">
         

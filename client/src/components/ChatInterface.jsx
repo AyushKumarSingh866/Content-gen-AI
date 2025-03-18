@@ -6,6 +6,7 @@ import { useCode } from "../hooks/useCode.js";
 function ChatInterface({ responseType }) {
   const [chatInput, setChatInput] = useState("");
   const [codeInput, setCodeInput] = useState("");
+  const [copiedIndex, setCopiedIndex] = useState(null); // Track copied message index
   const messagesEndRef = useRef(null);
 
   const {
@@ -29,25 +30,32 @@ function ChatInterface({ responseType }) {
 
     try {
       if (responseType === "chat") {
-        // Update chatMessages immediately with user's input
         chatMessages.push({ text: chatInput, sender: "user" });
-
-        setChatInput(""); // Clear input field
-        await fetchChatResponse(chatInput); // Fetch AI response
+        setChatInput("");
+        await fetchChatResponse(chatInput);
       } else {
-       
         codeMessages.push({ text: codeInput, sender: "user" });
-
-        setCodeInput(""); // Clear input field
-        await fetchCodeResponse(codeInput); // Fetch AI response
+        setCodeInput("");
+        await fetchCodeResponse(codeInput);
       }
     } finally {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   };
 
+  // Function to copy text and update button state
+  const copyToClipboard = (text, index) => {
+    navigator.clipboard.writeText(text);
+    setCopiedIndex(index); // Set copied state
+
+    // Reset button text after 2 seconds
+    setTimeout(() => {
+      setCopiedIndex(null);
+    }, 2000);
+  };
+
   return (
-    <div className="relative min-h-screen w-full bg-gradient-to-br from-gray-950 via-slate-900 to-indigo-700 text-white flex flex-col overflow-x-hidden border-gray-100">
+    <div className="relative min-h-screen w-full bg-gradient-to-br from-gray-950 via-slate-900 to-indigo-700 text-white flex flex-col overflow-hidden border-gray-100">
       {/* Enhanced Gradient Grid Background */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#4f4f4f2e_1px,transparent_1px)] bg-[size:20px_20px] opacity-40 [mask-image:radial-gradient(ellipse_80%_60%_at_50%_0%,#000_60%,transparent_100%)]"></div>
 
@@ -66,7 +74,7 @@ function ChatInterface({ responseType }) {
       {/* Main Content */}
       <main className="relative z-10 flex-1 flex flex-col px-4 sm:px-6 md:px-8 pb-24">
         <div className="flex-1 bg-gray-900/30 backdrop-blur-xl p-4 sm:p-6 rounded-2xl shadow-2xl border border-gray-800/50 max-w-4xl w-full mx-auto">
-          <div className="h-[60vh] overflow-y-auto space-y-4 scrollbar-thin scrollbar-thumb-indigo-600 scrollbar-track-gray-800">
+          <div className="space-y-4">
             {(responseType === "chat" ? chatMessages : codeMessages).map(
               (message, index) => (
                 <div
@@ -76,13 +84,28 @@ function ChatInterface({ responseType }) {
                   }`}
                 >
                   <div
-                    className={`max-w-[85%] sm:max-w-[70%] p-4 rounded-2xl shadow-md transition-all duration-200 ${
+                    className={`relative max-w-[85%] sm:max-w-[70%] p-4 rounded-2xl shadow-md transition-all duration-200 break-words whitespace-pre-wrap ${
                       message.sender === "user"
                         ? "bg-gradient-to-br from-blue-600 to-indigo-700 text-white"
                         : "bg-gradient-to-br from-purple-800 to-indigo-900 text-white"
                     }`}
+                    style={{
+                      overflowX: "auto", // Allow horizontal scrolling for long code
+                      wordBreak: "break-word", // Break long words
+                      whiteSpace: "pre-wrap", // Maintain formatting and wrap text
+                    }}
                   >
                     <ReactMarkdown>{message.text}</ReactMarkdown>
+
+                    {/* Show copy button only for AI responses */}
+                    {message.sender !== "user" && (
+                      <button
+                        onClick={() => copyToClipboard(message.text, index)}
+                        className="absolute top-2 right-2 p-1 bg-purple-700 hover:bg-purple-600 text-white text-xs rounded transition-opacity opacity-50 hover:opacity-100"
+                      >
+                        {copiedIndex === index ? "✅ Copied!" : "📋 Copy"}
+                      </button>
+                    )}
                   </div>
                 </div>
               )

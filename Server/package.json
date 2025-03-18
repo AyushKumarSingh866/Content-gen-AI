@@ -21,6 +21,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.10.1",
     "ollama": "^0.5.13",
+    "react-hot-toast": "^2.5.2",
     "swagger-jsdoc": "^6.0.0",
     "swagger-ui-express": "^5.0.1"
   },

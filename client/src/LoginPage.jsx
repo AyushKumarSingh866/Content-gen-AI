@@ -1,15 +1,15 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { toast, Toaster } from "react-hot-toast";
 
 export default function LoginPage() {
   const navigate = useNavigate();
 
   return (
     <div className="relative h-screen w-full bg-slate-950 flex items-center justify-center">
-      {/* Background Pattern (Same as App.jsx) */}
+      <Toaster position="top-center" reverseOrder={false} /> {/* Added here */}
+
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] flex items-center justify-center p-6">
-        
-        {/* Login Box */}
         <div className="w-full max-w-md bg-white/10 backdrop-blur-md p-8 rounded-xl shadow-lg border border-white/20">
           <h1 className="text-4xl font-bold text-white text-center mb-4">Diverse AI</h1>
           <p className="text-lg text-gray-300 text-center mb-6">
@@ -21,8 +21,17 @@ export default function LoginPage() {
             className="space-y-4"
             onSubmit={(e) => {
               e.preventDefault();
-              alert("Login successful! Redirecting...");
-              navigate("/app");
+              toast("Logged In successfully", {
+                icon: "✅",
+                style: {
+                  borderRadius: "10px",
+                  background: "#333",
+                  color: "#fff",
+                },
+              });
+              setTimeout(() => {
+                navigate("/");
+              }, 2000);
             }}
           >
             <div className="flex flex-col">
