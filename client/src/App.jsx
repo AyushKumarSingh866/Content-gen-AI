@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useNavigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import ChatInterface from "./components/ChatInterface";
 
 const App = () => {
@@ -12,13 +7,31 @@ const App = () => {
 
   return (
     <div className="relative h-screen w-full bg-slate-950 flex items-center justify-center">
+      {/* Background Grid Pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] flex flex-col items-center justify-center text-center p-6">
+        
+        {/* 🔹 Login & Signup Buttons (Top Right Corner) */}
+        <div className="absolute top-6 right-6 flex gap-4">
+          <button
+            className="px-6 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-md transition"
+            onClick={() => navigate("/login")}
+          >
+            Login
+          </button>
+          <button
+            className="px-6 py-2 text-white bg-green-600 hover:bg-green-700 rounded-lg shadow-md transition"
+            onClick={() => navigate("/signup")}
+          >
+            Sign Up
+          </button>
+        </div>
+
+        {/* Main Content */}
         <div className="text-8xl font-bold text-white mb-6 drop-shadow-lg">
           Diverse AI
         </div>
         <p className="text-lg font-medium text-gray-300 mb-8">
-          A smart chatbot jo likhe stories, messages, aur code, plus bane aapka
-          virtual tutor!
+          A smart chatbot jo likhe stories, messages, aur code, plus bane aapka virtual tutor!
         </p>
 
         <div className="flex flex-wrap justify-center gap-6">
@@ -26,14 +39,12 @@ const App = () => {
             {
               type: "chat",
               title: "Chat With Me",
-              description:
-                "Engage in a natural conversation with AI, perfect for brainstorming, Q&A, and discussions.",
+              description: "Engage in a natural conversation with AI, perfect for brainstorming, Q&A, and discussions.",
             },
             {
               type: "code",
               title: "Generate Code",
-              description:
-                "Get AI-powered code suggestions and snippets for your development projects.",
+              description: "Get AI-powered code suggestions and snippets for your development projects.",
             },
           ].map(({ type, title, description }) => (
             <div
@@ -50,4 +61,5 @@ const App = () => {
     </div>
   );
 };
+
 export default App;

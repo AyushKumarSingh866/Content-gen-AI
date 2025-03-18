@@ -4,79 +4,66 @@ import { useNavigate } from "react-router-dom";
 export default function LoginPage() {
   const navigate = useNavigate();
 
-  // Function to handle the "Login" button click
-  const handleLogin = () => {
-    alert("Login successful! Redirecting to the response page...");
-    navigate("/app");
-  };
-
-  // Function to handle the "Sign Up" button click
-  const handleSignUp = () => {
-    navigate("/signup");
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-900 to-purple-900 p-8">
-      {/* Header */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-white mb-4">Diverse</h1>
-        <p className="text-xl text-gray-200">
-          Login to access the intelligent model.
-        </p>
-      </div>
+    <div className="relative h-screen w-full bg-slate-950 flex items-center justify-center">
+      {/* Background Pattern (Same as App.jsx) */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] flex items-center justify-center p-6">
+        
+        {/* Login Box */}
+        <div className="w-full max-w-md bg-white/10 backdrop-blur-md p-8 rounded-xl shadow-lg border border-white/20">
+          <h1 className="text-4xl font-bold text-white text-center mb-4">Diverse AI</h1>
+          <p className="text-lg text-gray-300 text-center mb-6">
+            Login to access the intelligent model.
+          </p>
 
-      {/* Main Content */}
-      <div className="max-w-2xl mx-auto bg-white/10 backdrop-blur-md p-8 rounded-lg shadow-lg border border-white/10">
-        <h2 className="text-2xl font-bold text-white mb-6">Login</h2>
-
-        {/* Login Form */}
-        <form
-          className="space-y-4"
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleLogin();
-          }}
-        >
-          <div>
-            <label className="block text-white mb-2">Email</label>
-            <input
-              type="email"
-              className="w-full p-3 rounded-lg bg-white/20 text-white placeholder-gray-300"
-              placeholder="Enter your email"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-white mb-2">Password</label>
-            <input
-              type="password"
-              className="w-full p-3 rounded-lg bg-white/20 text-white placeholder-gray-300"
-              placeholder="Enter your password"
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white p-4 rounded-lg hover:bg-blue-600 transition duration-300"
+          {/* Login Form */}
+          <form
+            className="space-y-4"
+            onSubmit={(e) => {
+              e.preventDefault();
+              alert("Login successful! Redirecting...");
+              navigate("/app");
+            }}
           >
-            Login
-          </button>
-        </form>
+            <div className="flex flex-col">
+              <label className="text-white mb-2">Email</label>
+              <input
+                type="email"
+                className="w-full p-3 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:ring-2 focus:ring-blue-400"
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="text-white mb-2">Password</label>
+              <input
+                type="password"
+                className="w-full p-3 rounded-lg bg-white/20 text-white placeholder-gray-300 focus:ring-2 focus:ring-blue-400"
+                placeholder="Enter your password"
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-gradient-to-r from-blue-500 to-blue-700 text-white p-4 rounded-lg hover:opacity-90 transition duration-300"
+            >
+              Login
+            </button>
+          </form>
 
-        {/* Sign Up Button */}
-        <div className="mt-6">
-          <button
-            className="w-full bg-green-500 text-white p-4 rounded-lg hover:bg-green-600 transition duration-300"
-            onClick={handleSignUp}
-          >
-            Sign Up
-          </button>
+          {/* Sign Up Prompt */}
+          <div className="mt-6 text-center">
+            <p className="text-gray-300">
+              Don't have an account?{" "}
+              <span
+                className="text-blue-400 cursor-pointer hover:underline"
+                onClick={() => navigate("/signup")}
+              >
+                Sign up
+              </span>
+            </p>
+          </div>
         </div>
-      </div>
-
-      {/* Footer */}
-      <div className="text-center mt-12">
-        <p className="text-gray-200">Don't have an account? Sign up now.</p>
       </div>
     </div>
   );
