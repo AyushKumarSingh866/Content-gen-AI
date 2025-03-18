@@ -29,11 +29,17 @@ function ChatInterface({ responseType }) {
 
     try {
       if (responseType === "chat") {
-        await fetchChatResponse(chatInput);
-        setChatInput("");
+        // Update chatMessages immediately with user's input
+        chatMessages.push({ text: chatInput, sender: "user" });
+
+        setChatInput(""); // Clear input field
+        await fetchChatResponse(chatInput); // Fetch AI response
       } else {
-        await fetchCodeResponse(codeInput);
-        setCodeInput("");
+       
+        codeMessages.push({ text: codeInput, sender: "user" });
+
+        setCodeInput(""); // Clear input field
+        await fetchCodeResponse(codeInput); // Fetch AI response
       }
     } finally {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
