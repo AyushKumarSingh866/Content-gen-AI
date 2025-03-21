@@ -21,45 +21,73 @@ const app = express();
 // Middleware
 app.use(express.json());
 
-// CORS Configuration (Fix Streaming Issues)
-app.use(
-  cors({
-    origin: "*", // Update based on frontend port
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type"],
-  })
-);
+// 🔥 Fix CORS Issue: Allow both `localhost:3000` and `localhost:3002`
+const allowedOrigins = ["http://localhost:3000", "http://localhost:3002"];
 
-// Routes
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      console.log(`✅ Allowed Origin: ${origin}`);
+      callback(null, true);
+    } else {
+      console.log(`❌ Blocked by CORS: ${origin}`);
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+};
+
+// Apply CORS Middleware
+app.use(cors(corsOptions));
+
+// ✅ Handle Preflight Requests (OPTIONS)
+app.options("*", cors(corsOptions));
+
+// Debugging Middleware for Logging Requests
+app.use((req, res, next) => {
+  console.log(`📥 Incoming Request: ${req.method} ${req.url}`);
+  console.log("🔹 Request Body:", req.body);
+  next();
+});
+
+// API Routes
 app.use("/api", userRouter);
+
+// Debug Route: To Check If API is Running
+app.get("/api/status", (req, res) => {
+  res.json({ status: "✅ API is running!", time: new Date().toISOString() });
+});
 
 // Swagger Documentation
 const swaggerSpec = swaggerJsDoc(options);
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// Serve React Frontend AFTER API Routes
+// Serve React Frontend
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
-// Handle React routing, return all requests to React app
+// Handle React Routing
 app.get("*", (req, res, next) => {
-  if (req.originalUrl.startsWith("/api")) return next(); // Fix API calls interference
+  if (req.originalUrl.startsWith("/api")) return next(); // Ensure API calls work
   res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
 });
 
 // Global Error Handling Middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error("🚨 Error Stack Trace:", err.stack);
   res.status(500).json({ message: "Something went wrong!" });
 });
 
-// Start the server
-const port = PORT || 5006;
-app.listen(port, async () => {
+// Start the server only if the database connection is successful
+const startServer = async () => {
   try {
     await connectDb();
-    console.log(` Server is running on PORT ${port}`);
+    app.listen(PORT, () => console.log(`✅ Server is running on PORT ${PORT}`));
   } catch (error) {
-    console.error("Failed to connect to the database:", error);
+    console.error("❌ Failed to connect to the database:", error);
     process.exit(1);
   }
-});
+};
+
+startServer();

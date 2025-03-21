@@ -6,7 +6,7 @@ import { useCode } from "../hooks/useCode.js";
 function ChatInterface({ responseType }) {
   const [chatInput, setChatInput] = useState("");
   const [codeInput, setCodeInput] = useState("");
-  const [copiedIndex, setCopiedIndex] = useState(null); // Track copied message index
+  const [copiedIndex, setCopiedIndex] = useState(null);
   const messagesEndRef = useRef(null);
 
   const {
@@ -43,12 +43,9 @@ function ChatInterface({ responseType }) {
     }
   };
 
-  // Function to copy text and update button state
   const copyToClipboard = (text, index) => {
     navigator.clipboard.writeText(text);
-    setCopiedIndex(index); // Set copied state
-
-    // Reset button text after 2 seconds
+    setCopiedIndex(index);
     setTimeout(() => {
       setCopiedIndex(null);
     }, 2000);
@@ -56,10 +53,8 @@ function ChatInterface({ responseType }) {
 
   return (
     <div className="relative min-h-screen w-full bg-gradient-to-br from-gray-950 via-slate-900 to-indigo-700 text-white flex flex-col overflow-hidden border-gray-100">
-      {/* Enhanced Gradient Grid Background */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#4f4f4f2e_1px,transparent_1px)] bg-[size:20px_20px] opacity-40 [mask-image:radial-gradient(ellipse_80%_60%_at_50%_0%,#000_60%,transparent_100%)]"></div>
 
-      {/* Header */}
       <header className="relative z-10 p-4 sm:p-6">
         <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-center">
           Diverse AI
@@ -71,7 +66,6 @@ function ChatInterface({ responseType }) {
         </p>
       </header>
 
-      {/* Main Content */}
       <main className="relative z-10 flex-1 flex flex-col px-4 sm:px-6 md:px-8 pb-24">
         <div className="flex-1 bg-gray-900/30 backdrop-blur-xl p-4 sm:p-6 rounded-2xl shadow-2xl border border-gray-800/50 max-w-4xl w-full mx-auto">
           <div className="space-y-4">
@@ -90,14 +84,13 @@ function ChatInterface({ responseType }) {
                         : "bg-gradient-to-br from-purple-800 to-indigo-900 text-white"
                     }`}
                     style={{
-                      overflowX: "auto", // Allow horizontal scrolling for long code
-                      wordBreak: "break-word", // Break long words
-                      whiteSpace: "pre-wrap", // Maintain formatting and wrap text
+                      overflowX: "auto",
+                      wordBreak: "break-word",
+                      whiteSpace: "pre-wrap",
                     }}
                   >
                     <ReactMarkdown>{message.text}</ReactMarkdown>
 
-                    {/* Show copy button only for AI responses */}
                     {message.sender !== "user" && (
                       <button
                         onClick={() => copyToClipboard(message.text, index)}
@@ -110,12 +103,17 @@ function ChatInterface({ responseType }) {
                 </div>
               )
             )}
+
+           {/*loading animation*/}
+            {(isChatLoading || isCodeLoading) && (
+              <div className="loading-bar animate-loading gradient-1 mx-auto w-1/2"></div>
+            )}
+
             <div ref={messagesEndRef} />
           </div>
         </div>
       </main>
 
-      {/* Input Area - Fixed to bottom */}
       <div className="fixed bottom-0 left-0 right-0 z-20 p-4 sm:p-6 bg-gradient-to-t from-gray-900 to-transparent">
         <div className="max-w-4xl mx-auto flex items-center gap-3 sm:gap-4">
           <input

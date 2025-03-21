@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 
 export default function StartingPage() {
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user")); // Get user from localStorage
 
-  // Function to handle the "Start Now" button click
+  // Function to handle navigation
   const handleStartNow = () => {
     navigate("/login"); // Redirect to the login page
   };
@@ -23,13 +24,19 @@ export default function StartingPage() {
       <div className="max-w-2xl mx-auto bg-white/10 backdrop-blur-md p-8 rounded-lg shadow-lg border border-white/10">
         <h2 className="text-2xl font-bold text-white mb-6">Welcome to Diverse</h2>
 
-        {/* Start Now Button */}
-        <button
-          className="w-full bg-blue-500 text-white p-4 rounded-lg hover:bg-blue-600 transition duration-300"
-          onClick={handleStartNow}
-        >
-          Start Now
-        </button>
+        {/* Show "Start Now" button for guests, Username for logged-in users */}
+        {user ? (
+          <p className="text-lg text-white text-center">
+            Welcome back, <span className="font-bold">{user.name}</span>!
+          </p>
+        ) : (
+          <button
+            className="w-full bg-blue-500 text-white p-4 rounded-lg hover:bg-blue-600 transition duration-300"
+            onClick={handleStartNow}
+          >
+            Start Now
+          </button>
+        )}
       </div>
 
       {/* Footer */}

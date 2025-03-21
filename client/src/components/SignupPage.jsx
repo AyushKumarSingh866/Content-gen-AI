@@ -1,23 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast"; // Import toast & Toaster
 
 export default function SignupPage() {
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
-  const handleSignUp = () => {
-    toast("Welcome to Diverse 🎉", {
-      icon: "🚀",
-      style: {
-        borderRadius: "10px",
-        background: "#333",
-        color: "#fff",
-      },
-    });
+  // Handle Input Changes
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-    setTimeout(() => {
-      navigate("/login"); 
-    }, 2000);
+  // Handle Signup Request
+  const handleSignUp = async (e) => {
+    e.preventDefault(); // Prevent form reload
+
+    try {
+      const response = await fetch("http://localhost:5006/api/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.success(data.message || "Signup successful! 🎉");
+        setTimeout(() => navigate("/login"), 2000);
+      } else {
+        toast.error(data.message || "Signup failed. Try again.");
+      }
+    } catch (error) {
+      toast.error("Something went wrong!");
+    }
   };
 
   const handleLogin = () => {
@@ -36,11 +57,14 @@ export default function SignupPage() {
           <h2 className="text-3xl font-bold text-white mb-6">Sign Up</h2>
 
           {/* Signup Form */}
-          <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); handleSignUp(); }}>
+          <form className="space-y-4" onSubmit={handleSignUp}>
             <div className="flex flex-col">
               <label className="text-white mb-2">Name</label>
               <input
                 type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
                 className="w-full p-3 rounded-lg bg-white/20 text-white placeholder-gray-300"
                 placeholder="Enter your name"
                 required
@@ -50,6 +74,9 @@ export default function SignupPage() {
               <label className="text-white mb-2">Email</label>
               <input
                 type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
                 className="w-full p-3 rounded-lg bg-white/20 text-white placeholder-gray-300"
                 placeholder="Enter your email"
                 required
@@ -59,6 +86,9 @@ export default function SignupPage() {
               <label className="text-white mb-2">Password</label>
               <input
                 type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
                 className="w-full p-3 rounded-lg bg-white/20 text-white placeholder-gray-300"
                 placeholder="Enter your password"
                 required
