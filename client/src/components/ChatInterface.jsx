@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
-import { useChat } from "../hooks/useChat.js";
-import { useCode } from "../hooks/useCode.js";
+import { useChat } from "../hooks/useChat.jsx";
+import { useCode } from "../hooks/useCode.jsx";
 
 function ChatInterface({ responseType }) {
   const [chatInput, setChatInput] = useState("");

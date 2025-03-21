@@ -1,6 +1,6 @@
 import ollama from "ollama";
 
-const generateCode = async (req, res, next) => {
+export const generateCode = async (req, res, next) => {
   try {
     const { prompt } = req.body;
 

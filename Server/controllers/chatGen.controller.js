@@ -1,6 +1,6 @@
 import ollama from "ollama";
 
-const generateChat = async (req, res) => {
+export const generateChat = async (req, res) => {
   try {
     const { prompt } = req.body;
 
@@ -38,4 +38,4 @@ const generateChat = async (req, res) => {
   }
 };
 
-export default generateChat;
+  

@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, Toaster } from "react-hot-toast";
+import { useCookie } from "./context/AuthContext.jsx";
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { setcookie } = useCookie();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -23,9 +25,10 @@ export default function LoginPage() {
 
       console.log("🟠 Response Status:", response.status);
       const data = await response.json();
-      console.log("🟢 Response Data:", data);
 
-      if (!response.ok || !data.success || !data.user.accessToken) {
+      setcookie(data.data.accessToken);
+
+      if (!response.ok || !data.success || !data.data.accessToken) {
         throw new Error(data.message || "Invalid email or password");
       }
 
@@ -46,8 +49,12 @@ export default function LoginPage() {
       <Toaster position="top-center" reverseOrder={false} />
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] flex flex-col items-center justify-center p-6">
         <div className="w-full max-w-md bg-white/10 backdrop-blur-md p-8 rounded-xl shadow-lg border border-white/20">
-          <h1 className="text-4xl font-bold text-white text-center mb-4">Diverse AI</h1>
-          <p className="text-lg text-gray-300 text-center mb-6">Login to access the intelligent model.</p>
+          <h1 className="text-4xl font-bold text-white text-center mb-4">
+            Diverse AI
+          </h1>
+          <p className="text-lg text-gray-300 text-center mb-6">
+            Login to access the intelligent model.
+          </p>
 
           <form className="space-y-4" onSubmit={handleLogin}>
             <div className="flex flex-col">
