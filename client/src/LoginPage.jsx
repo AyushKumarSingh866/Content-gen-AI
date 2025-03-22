@@ -25,12 +25,15 @@ export default function LoginPage() {
 
       console.log("🟠 Response Status:", response.status);
       const data = await response.json();
+      console.log("🟢 API Response:", data);
 
-      setcookie(data.data.accessToken);
-
-      if (!response.ok || !data.success || !data.data.accessToken) {
+      // Check if login is successful
+      if (!response.ok || !data.success || !data.user?.accessToken) {
         throw new Error(data.message || "Invalid email or password");
       }
+
+      // Set access token
+      setcookie(data.user.accessToken);
 
       toast.success("✅ Login successful!");
 

@@ -50,7 +50,7 @@ export const registerUser = async (req, res) => {
 
     return res.status(201).json({
       success: true,
-      data: {
+      user: { // 🔹 Changed from "data" to "user"
         _id: user._id,
         name: user.name,
         email: user.email,
@@ -105,7 +105,7 @@ export const loginUser = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      data: {
+      user: {  // 🔹 Changed from "data" to "user"
         _id: user._id,
         name: user.name,
         email: user.email,
@@ -142,7 +142,7 @@ export const refreshToken = async (req, res) => {
     const newAccessToken = generateAccessToken(user._id);
     return res.status(200).json({
       success: true,
-      data: { accessToken: newAccessToken },
+      user: { accessToken: newAccessToken },  // 🔹 Changed from "data" to "user"
     });
   } catch (error) {
     console.error("Refresh Token Error:", error.message);
@@ -166,7 +166,7 @@ export const getDetails = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      data: {
+      user: {  // 🔹 Changed from "data" to "user"
         id: user._id,
         name: user.name,
         email: user.email,
